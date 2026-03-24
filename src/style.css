@@ -1,0 +1,7 @@
+/***** 引入Tailwind样式 *****/
+/* base:        基础样式（如默认的margin、padding重置，基础HTML元素样式），重置浏览器默认样式（如消除默认的body边距、统一字体），确保不同浏览器的基础样式一致，因为已经关掉了preflight，所以几乎为空 */
+/* components:  组件样式（如按钮、卡片等基础组件的预设类，可选但推荐），导入Tailwind预设的组件类（如.btn基础按钮样式），若你不需要可删除，但保留不影响 */
+/* utilities:   工具类样式（核心！包含所有原子化类如flex、text-red-500、p-4等），导入所有原子化工具类，没有这行代码，所有flex、text-blue-500等类都无法生效 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

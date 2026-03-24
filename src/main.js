@@ -1,5 +1,5 @@
 import './assets/main.css'
-
+import './style.css' // 引入全局样式（包含Tailwind）
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
