@@ -21,5 +21,15 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  // 代理访问后端系统
+  // TODO 开发测试用，build前需要删除或注释此部分
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:30000/',
+        changeOrigin: true
+      }
+    }
   }
 })
