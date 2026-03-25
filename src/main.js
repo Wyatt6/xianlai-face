@@ -7,8 +7,8 @@ import installDirectives from './directives' // 引入自定义指令
 import './style.css' // 引入全局样式（包含Tailwind样式）
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-
 import App from './App.vue'
+import { useSystemStore } from './stores/system'
 import router from './router'
 
 const app = createApp(App)
@@ -25,4 +25,4 @@ installDirectives(app)
 
 app.use(router)
 
-// app.mount('#app')
+useSystemStore().initialize(app)
