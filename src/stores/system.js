@@ -4,6 +4,7 @@ import axios from 'axios'
 import { notEmpty, hasText } from '@/utils/common'
 import { useRouterStore } from '@/router'
 import { useOptionStore } from './option'
+import { usePathStore } from './path'
 
 export const useSystemStore = defineStore('system', () => {
   const initing = ref(false)
@@ -34,6 +35,11 @@ export const useSystemStore = defineStore('system', () => {
               if (notEmpty(result.data.systemOptions) && hasText(result.data.checksum.systemOptionsChecksum)) {
                 await useOptionStore().evalData('SYSTEM', result.data.systemOptions, result.data.checksum.systemOptionsChecksum)
                 console.log('系统参数数据加载完成')
+              }
+              // 系统路径
+              if (notEmpty(result.data.paths) && hasText(result.data.checksum.pathsChecksum)) {
+                await usePathStore().evalData(result.data.paths, result.data.checksum.pathsChecksum)
+                console.log('路径数据加载完成')
               }
               // 注册router插件
               if (app != null) {
