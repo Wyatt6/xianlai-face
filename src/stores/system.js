@@ -29,6 +29,7 @@ export const useSystemStore = defineStore('system', () => {
             if (notEmpty(result.data) && notEmpty(result.data.checksum)) {
               initData.value = result.data
               // 清除旧的路由实例
+              await useRouterStore().clearRouter()
               // 系统参数
               if (notEmpty(result.data.systemOptions) && hasText(result.data.checksum.systemOptionsChecksum)) {
                 await useOptionStore().evalData('SYSTEM', result.data.systemOptions, result.data.checksum.systemOptionsChecksum)
