@@ -10,8 +10,11 @@ import { hasText } from '@/utils/common'
 
 export const useOptionStore = defineStore('option', () => {
   const data = ref({
+    // 系统参数
     system: {},
+    // 租户参数
     tenant: {},
+    // 用户参数
     user: {}
   })
   const checksum = ref({

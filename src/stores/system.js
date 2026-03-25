@@ -6,10 +6,19 @@ import { useRouterStore } from '@/router'
 import { useOptionStore } from './option'
 import { usePathStore } from './path'
 import { useMenuStore } from './menu'
+import { useApiStore } from '@/apis'
 
 export const useSystemStore = defineStore('system', () => {
   const initing = ref(false)
   const initData = ref({})
+
+  // const logoutLock = ref(false)
+  // function setLogoutLock() {
+  //   logoutLock.value = true
+  // }
+  // function releaseLogoutLock() {
+  //   logoutLock.value = false
+  // }
 
   function initFail() {
     document.getElementById('init').style.display = 'none'
@@ -32,6 +41,7 @@ export const useSystemStore = defineStore('system', () => {
               initData.value = result.data
               // 清除旧的路由实例
               await useRouterStore().clearRouter()
+              // TODO 后续还要斟酌这些对象是否需要增删改查功能
               // 系统参数
               if (notEmpty(result.data.systemOptions) && hasText(result.data.checksum.systemOptionsChecksum)) {
                 await useOptionStore().evalData('SYSTEM', result.data.systemOptions, result.data.checksum.systemOptionsChecksum)
@@ -56,6 +66,11 @@ export const useSystemStore = defineStore('system', () => {
               if (app != null) {
                 app.use(useRouterStore().getRouter())
                 console.log('router插件注册完成')
+              }
+              // 系统接口（要用到router插件）
+              if (notEmpty(result.data.apis) && hasText(result.data.checksum.apisChecksum)) {
+                await useApiStore().evalData(result.data.apis, result.data.checksum.apisChecksum)
+                console.log('接口数据加载完成')
               }
               // 挂载页面到Vue应用
               console.log('系统初始化完成')
@@ -104,6 +119,8 @@ export const useSystemStore = defineStore('system', () => {
 
   return {
     initData,
+    // setLogoutLock,
+    // releaseLogoutLock,
     initialize,
     isChecksumChange
   }
