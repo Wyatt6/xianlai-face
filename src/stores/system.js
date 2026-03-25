@@ -41,6 +41,11 @@ export const useSystemStore = defineStore('system', () => {
                 await usePathStore().evalData(result.data.paths, result.data.checksum.pathsChecksum)
                 console.log('路径数据加载完成')
               }
+              // 系统路由
+              if (notEmpty(result.data.routes) && hasText(result.data.checksum.routesChecksum)) {
+                await useRouterStore().evalData(result.data.routes, result.data.checksum.routesChecksum)
+                console.log('路由数据加载完成')
+              }
               // 注册router插件
               if (app != null) {
                 app.use(useRouterStore().getRouter())
