@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
 import { notEmpty, hasText } from '@/utils/common'
+import { useRouterStore } from '@/router'
 import { useOptionStore } from './option'
 
 export const useSystemStore = defineStore('system', () => {
@@ -27,10 +28,16 @@ export const useSystemStore = defineStore('system', () => {
           if (result.success) {
             if (notEmpty(result.data) && notEmpty(result.data.checksum)) {
               initData.value = result.data
+              // 清除旧的路由实例
               // 系统参数
               if (notEmpty(result.data.systemOptions) && hasText(result.data.checksum.systemOptionsChecksum)) {
                 await useOptionStore().evalData('SYSTEM', result.data.systemOptions, result.data.checksum.systemOptionsChecksum)
                 console.log('系统参数数据加载完成')
+              }
+              // 注册router插件
+              if (app != null) {
+                app.use(useRouterStore().getRouter())
+                console.log('router插件注册完成')
               }
               // 挂载页面到Vue应用
               console.log('系统初始化完成')

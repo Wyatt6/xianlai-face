@@ -9,7 +9,6 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import { useSystemStore } from './stores/system'
-import router from './router'
 
 const app = createApp(App)
 
@@ -22,7 +21,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 // 全局注册自定义指令
 installDirectives(app)
-
-app.use(router)
 
 useSystemStore().initialize(app)
