@@ -1,7 +1,7 @@
 /**
  * 参数使用方法：
  * const Option = useOptionStore()
- * Option.data.xxx.xxx
+ * Option.data.xxx.xxx 或 Option.getValue(key)
  */
 
 import { defineStore } from 'pinia'
@@ -64,9 +64,26 @@ export const useOptionStore = defineStore('option', () => {
     })
   }
 
+  /**
+   * 获取参数值
+   */
+  function getValue(key) {
+    const keys = key.split('.')
+    let now = data.value
+    for (let i = 0; i < keys.length; i++) {
+      if (i == keys.length - 1) {
+        return now[keys[i]]
+      } else {
+        if (now[keys[i]] == null) return
+        now = now[keys[i]]
+      }
+    }
+  }
+
   return {
     data,
     checksum,
-    evalData
+    evalData,
+    getValue
   }
 })
