@@ -4,11 +4,11 @@ export default {
     TOKEN_EXPIRE_TIME: 'token_expire_time',
     USER: 'user',
     ROLES: 'roles',
-    PERMISSIONS: 'permissions',
-    PROFILE: 'profile',
-    REMEMBER_USERNAME: 'remember_username',
-    MENUBAR_EXPAND: 'sidebar_expand',
-    TAG_LIST: 'tag_list'
+    PERMISSIONS: 'permissions'
+    // PROFILE: 'profile',
+    // REMEMBER_USERNAME: 'remember_username',
+    // MENUBAR_EXPAND: 'sidebar_expand',
+    // TAG_LIST: 'tag_list'
   },
 
   /**

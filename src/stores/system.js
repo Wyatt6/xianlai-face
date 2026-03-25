@@ -12,13 +12,13 @@ export const useSystemStore = defineStore('system', () => {
   const initing = ref(false)
   const initData = ref({})
 
-  // const logoutLock = ref(false)
-  // function setLogoutLock() {
-  //   logoutLock.value = true
-  // }
-  // function releaseLogoutLock() {
-  //   logoutLock.value = false
-  // }
+  const logoutLock = ref(false)
+  function setLogoutLock() {
+    logoutLock.value = true
+  }
+  function releaseLogoutLock() {
+    logoutLock.value = false
+  }
 
   function initFail() {
     document.getElementById('init').style.display = 'none'
@@ -41,7 +41,6 @@ export const useSystemStore = defineStore('system', () => {
               initData.value = result.data
               // 清除旧的路由实例
               await useRouterStore().clearRouter()
-              // TODO 后续还要斟酌这些对象是否需要增删改查功能
               // 系统参数
               if (notEmpty(result.data.systemOptions) && hasText(result.data.checksum.systemOptionsChecksum)) {
                 await useOptionStore().evalData('SYSTEM', result.data.systemOptions, result.data.checksum.systemOptionsChecksum)
@@ -119,8 +118,8 @@ export const useSystemStore = defineStore('system', () => {
 
   return {
     initData,
-    // setLogoutLock,
-    // releaseLogoutLock,
+    setLogoutLock,
+    releaseLogoutLock,
     initialize,
     isChecksumChange
   }

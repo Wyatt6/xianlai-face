@@ -18,7 +18,7 @@ export function createAxiosInstance() {
   // axios 配置详见：https://www.axios-http.cn/docs/req_config
   const instance = axios.create({
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    timeout: Option.data.request.timeout
+    timeout: Option.data.system.request.timeout
     // ...其他配置使用axios的默认值
   })
   // 添加请求拦截器
