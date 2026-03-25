@@ -22,6 +22,15 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  // 打包配置，生产包不打印控制台日志
+  build: {
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        pure_funcs: ['console.log']
+      }
+    }
+  },
   // 代理访问后端系统
   // TODO 开发测试用，build前需要删除或注释此部分
   server: {
