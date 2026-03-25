@@ -30,7 +30,6 @@ export const useSystemStore = defineStore('system', () => {
     if (!initing.value) {
       initing.value = true
       await axios
-        .get('/api/system/launch/init/getInitData', {
           headers: { 'Content-Type': 'application/json; charset=utf-8' },
           timeout: 60000
         })
