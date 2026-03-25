@@ -5,6 +5,7 @@ import { notEmpty, hasText } from '@/utils/common'
 import { useRouterStore } from '@/router'
 import { useOptionStore } from './option'
 import { usePathStore } from './path'
+import { useMenuStore } from './menu'
 
 export const useSystemStore = defineStore('system', () => {
   const initing = ref(false)
@@ -45,6 +46,11 @@ export const useSystemStore = defineStore('system', () => {
               if (notEmpty(result.data.routes) && hasText(result.data.checksum.routesChecksum)) {
                 await useRouterStore().evalData(result.data.routes, result.data.checksum.routesChecksum)
                 console.log('路由数据加载完成')
+              }
+              // 系统菜单
+              if (notEmpty(result.data.menus) && hasText(result.data.checksum.menusChecksum)) {
+                await useMenuStore().evalData(result.data.menus, result.data.checksum.menusChecksum)
+                console.log('菜单数据加载完成')
               }
               // 注册router插件
               if (app != null) {
