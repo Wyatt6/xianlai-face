@@ -1,14 +1,14 @@
 /**
  * 参数使用方法：
- * const Option = useOptionStore()
- * Option.data.xxx.xxx 或 Option.getValue(key)
+ * const Config = useConfigStore()
+ * Config.data.xxx.xxx 或 Config.getValue(key)
  */
 
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { hasText } from '@/utils/common'
 
-export const useOptionStore = defineStore('option', () => {
+export const useConfigStore = defineStore('config', () => {
   const data = ref({
     // 系统参数
     system: {},
@@ -26,7 +26,7 @@ export const useOptionStore = defineStore('option', () => {
   /**
    * 参数赋值函数
    */
-  async function evalData(scope, optionData, checksumData) {
+  async function evalData(scope, configData, checksumData) {
     switch (scope) {
       case 'SYSTEM':
         checksum.value.system = checksumData
@@ -38,7 +38,7 @@ export const useOptionStore = defineStore('option', () => {
         checksum.value.user = checksumData
         break
     }
-    Object.entries(optionData).forEach(([key, valueObj]) => {
+    Object.entries(configData).forEach(([key, valueObj]) => {
       if (hasText(valueObj.type) && hasText(valueObj.value)) {
         const keys = key.split('.')
         let now = data.value
