@@ -9,36 +9,15 @@ import { ref } from 'vue'
 import { hasText } from '@/utils/common'
 
 export const useConfigStore = defineStore('config', () => {
-  const data = ref({
-    // 系统参数
-    system: {},
-    // 租户参数
-    tenant: {},
-    // 用户参数
-    user: {}
-  })
-  const checksum = ref({
-    system: null,
-    tenant: null,
-    user: null
-  })
+  const systemConfigUpdateTime = ref(null)
+  const tenantConfigUpdateTime = ref(null)
+  const data = ref({})
 
   /**
    * 参数赋值函数
    */
-  async function evalData(scope, configData, checksumData) {
-    switch (scope) {
-      case 'SYSTEM':
-        checksum.value.system = checksumData
-        break
-      case 'TENANT':
-        checksum.value.tenant = checksumData
-        break
-      case 'USER':
-        checksum.value.user = checksumData
-        break
-    }
-    Object.entries(configData).forEach(([key, valueObj]) => {
+  async function evalData(configs) {
+    Object.entries(configs).forEach(([key, valueObj]) => {
       if (hasText(valueObj.type) && hasText(valueObj.value)) {
         const keys = key.split('.')
         let now = data.value
@@ -82,7 +61,6 @@ export const useConfigStore = defineStore('config', () => {
 
   return {
     data,
-    checksum,
     evalData,
     getValue
   }

@@ -47,11 +47,11 @@ export const useSystemStore = defineStore('system', () => {
                 useTenantStore().evalData(result.data.tenant)
                 console.log('租户信息加载完成')
               }
-              // // 配置数据
-              // if (notEmpty(result.data.configs)) {
-              //   useConfigStore().evalData('SYSTEM', result.data.systemOptions, result.data.checksum.systemOptionsChecksum)
-              //   console.log('配置数据加载完成')
-              // }
+              // 配置数据
+              if (notEmpty(result.data.configs)) {
+                await useConfigStore().evalData(result.data.configs)
+                console.log('配置数据加载完成')
+              }
             }
           } else {
             initFail()
@@ -113,34 +113,10 @@ export const useSystemStore = defineStore('system', () => {
     }
   }
 
-  function getChecksums() {
-    return initData.value.checksum
-  }
-
-  function isChecksumChange(newChecksum) {
-    const oldChecksum = getChecksums()
-    const newKeys = Object.keys(newChecksum)
-    for (let i = 0; i < newKeys.length; i++) {
-      const k = newKeys[i]
-      if (!hasText(oldChecksum[k]) || oldChecksum[k] !== newChecksum[k]) {
-        return true
-      }
-    }
-    const oldKeys = Object.keys(oldChecksum)
-    for (let i = 0; i < oldKeys.length; i++) {
-      const k = oldKeys[i]
-      if (!hasText(newChecksum[k]) || newChecksum[k] !== oldChecksum[k]) {
-        return true
-      }
-    }
-    return false
-  }
-
   return {
     initData,
     setLogoutLock,
     releaseLogoutLock,
-    initialize,
-    isChecksumChange
+    initialize
   }
 })
