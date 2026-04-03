@@ -6,7 +6,7 @@ export const useTenantStore = defineStore('tenant', () => {
   const TENANT_ID = ref(null)
   const TENANT_CODE = ref(null)
 
-  function evalData(tenant) {
+  async function evalData(tenant) {
     data.value = tenant
     TENANT_ID.value = tenant.id
     TENANT_CODE.value = tenant.code

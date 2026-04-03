@@ -44,7 +44,7 @@ export const useSystemStore = defineStore('system', () => {
               initData.value = result.data
               // 租户信息
               if (notEmpty(result.data.tenant)) {
-                useTenantStore().evalData(result.data.tenant)
+                await useTenantStore().evalData(result.data.tenant)
                 console.log('租户信息加载完成')
               }
               // 配置数据
