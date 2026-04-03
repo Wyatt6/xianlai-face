@@ -1,5 +1,3 @@
-import { useOptionStore } from '@/stores/option'
-
 /**
  * 请求发送日志
  * @param {*} request 请求对象
