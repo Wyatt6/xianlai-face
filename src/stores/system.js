@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
-import { notEmpty, hasText } from '@/utils/common'
+import { notEmpty } from '@/utils/common'
 import { useTenantStore } from './tenant'
 import { useConfigStore } from './config'
 import { useRouterStore } from '@/router'
@@ -37,6 +37,7 @@ export const useSystemStore = defineStore('system', () => {
           timeout: 60000
         })
         .then(async response => {
+          const headers = response.headers
           const result = response.data
           if (result.success) {
             if (notEmpty(result.data)) {
@@ -49,7 +50,9 @@ export const useSystemStore = defineStore('system', () => {
               }
               // 配置数据
               if (notEmpty(result.data.configs)) {
-                await useConfigStore().evalData(result.data.configs)
+                const systemCUT = headers['x-system-config-update-time']
+                const tenantCUT = headers['x-tenant-config-update-time']
+                await useConfigStore().evalData(result.data.configs, systemCUT, tenantCUT)
                 console.log('配置数据加载完成')
               }
             }
@@ -66,13 +69,6 @@ export const useSystemStore = defineStore('system', () => {
           initing.value = false
         })
 
-      // await axios
-      //   .get('/api/system/common/init/getInitData', {
-      //     headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      //     timeout: 60000
-      //   })
-      //   .then(async response => {
-      //       if (notEmpty(result.data) && notEmpty(result.data.checksum)) {
       //         initData.value = result.data
       //         // 清除旧的路由实例
       //         await useRouterStore().clearRouter()
@@ -108,8 +104,6 @@ export const useSystemStore = defineStore('system', () => {
       //           app.mount('#app')
       //           console.log('#app已挂载')
       //         }
-      //       }
-      //   })
     }
   }
 

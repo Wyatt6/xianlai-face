@@ -16,7 +16,9 @@ export const useConfigStore = defineStore('config', () => {
   /**
    * 参数赋值函数
    */
-  async function evalData(configs) {
+  async function evalData(configs, systemCUT, tenantCUT) {
+    if (systemCUT != null) systemConfigUpdateTime.value = systemCUT
+    if (tenantCUT != null) tenantConfigUpdateTime.value = tenantCUT
     Object.entries(configs).forEach(([key, valueObj]) => {
       if (hasText(valueObj.type) && hasText(valueObj.value)) {
         const keys = key.split('.')
