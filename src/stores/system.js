@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
-import { notEmpty, getCurrMilliTimestamp } from '@/utils/common'
+import { notEmpty, getCurrMilliTimestamp, hasText } from '@/utils/common'
 import { useTenantStore } from './tenant'
 import { useConfigStore } from './config'
 import { useRouterStore } from '@/router'
@@ -84,6 +84,18 @@ export const useSystemStore = defineStore('system', () => {
               app.use(useRouterStore().getRouter())
               console.log('router插件注册完成')
             }
+            // 系统接口（要用到router插件）
+            if (notEmpty(result.data) && notEmpty(result.data.apis)) {
+              const apiUpdateTime = headers['x-api-update-time']
+              await useApiStore().evalData(result.data.apis, apiUpdateTime)
+              console.log('接口数据加载完成')
+            }
+            // 挂载页面到Vue应用
+            console.log('系统初始化完成:', getCurrMilliTimestamp())
+            if (app != null) {
+              app.mount('#app')
+              console.log('#app已挂载')
+            }
           } else {
             console.log(result)
             initFail(result.message)
@@ -97,18 +109,6 @@ export const useSystemStore = defineStore('system', () => {
         .finally(() => {
           initing.value = false
         })
-
-      //         // 系统接口（要用到router插件）
-      //         if (notEmpty(result.data.apis) && hasText(result.data.checksum.apisChecksum)) {
-      //           await useApiStore().evalData(result.data.apis, result.data.checksum.apisChecksum)
-      //           console.log('接口数据加载完成')
-      //         }
-      //         // 挂载页面到Vue应用
-      //         console.log('系统初始化完成')
-      //         if (app != null) {
-      //           app.mount('#app')
-      //           console.log('#app已挂载')
-      //         }
     }
   }
 

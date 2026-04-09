@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { useSystemStore } from '@/stores/system'
-import { useConfigStore } from '@/stores/config'
 import { useResetStore } from '@/stores/reset'
 import { usePathStore } from '@/stores/path'
 import { useRouterStore } from '@/router'
@@ -11,14 +10,13 @@ import { notEmpty, hasText } from '@/utils/common'
 
 export function createAxiosInstance() {
   const System = useSystemStore()
-  const Config = useConfigStore()
   const Reset = useResetStore()
   const Path = usePathStore()
   const router = useRouterStore().getRouter()
   // axios 配置详见：https://www.axios-http.cn/docs/req_config
   const instance = axios.create({
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    timeout: Config.data.system.request.timeout
+    timeout: 30000
     // ...其他配置使用axios的默认值
   })
   // 添加请求拦截器
@@ -34,7 +32,7 @@ export function createAxiosInstance() {
           router.push(Path.data.LOGIN)
           return Promise.reject(new Error('登录已过期，请重新登录'))
         } else {
-          config.headers.token = `${Token.getToken()}` // 在报文头中注入token
+          config.headers['X-Token'] = `${Token.getToken()}` // 在报文头中注入token
         }
       }
       RequestLogger.send.info(config)

@@ -16,14 +16,14 @@ import { hasText, notEmpty } from '@/utils/common'
 import { createAxiosInstance } from './instance'
 
 export const useApiStore = defineStore('api', () => {
+  const apiUpdateTime = ref(null)
   const request = ref({})
-  const checksum = ref(null)
 
   /**
    * 系统接口赋值函数
    */
-  async function evalData(apiData, checksumData) {
-    checksum.value = checksumData
+  async function evalData(apiData, apiUT) {
+    if (apiUT != null) apiUpdateTime.value = apiUT
     const axiosInstance = createAxiosInstance()
     if (notEmpty(apiData)) {
       apiData.forEach(item => {
@@ -50,7 +50,6 @@ export const useApiStore = defineStore('api', () => {
 
   return {
     request,
-    checksum,
     evalData
   }
 })
