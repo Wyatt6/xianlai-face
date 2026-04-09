@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { useConfigStore } from '@/stores/config'
 import { usePathStore } from '@/stores/path'
 import { useResetStore } from '@/stores/reset'
 import { notEmpty, hasText } from '@/utils/common'
@@ -117,14 +118,14 @@ export const useRouterStore = defineStore('router', () => {
             console.log('用户已登录，不允许访问门户页面，重定向到主页')
             next(Path.data.INDEX)
           } else {
-            // TODO 注册功能开关（租户级别控制）
-            // if (to.path === Path.data.REGISTER && !useOptionStore().data.system.portal.allowRegister) {
-            //   console.log('注册功能未开放')
-            //   next(Path.data.NOT_FOUND)
-            // } else {
-            // 其他非门户的白名单页面不论登录与否均可访问
-            next()
-            // }
+            // 注册功能开关（租户级别控制）
+            if (to.path === Path.data.REGISTER && !useConfigStore().data.user.enable_register) {
+              console.log('注册功能未开放')
+              next(Path.data.NOT_FOUND)
+            } else {
+              // 其他非门户的白名单页面不论登录与否均可访问
+              next()
+            }
           }
         }
       })

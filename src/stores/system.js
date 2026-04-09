@@ -75,6 +75,11 @@ export const useSystemStore = defineStore('system', () => {
               await useMenuStore().evalData(result.data.menus, menuUpdateTime)
               console.log('菜单数据加载完成')
             }
+            // 注册router插件
+            if (app != null) {
+              app.use(useRouterStore().getRouter())
+              console.log('router插件注册完成')
+            }
           } else {
             initFail()
             console.error('获取初始数据失败')
@@ -88,11 +93,6 @@ export const useSystemStore = defineStore('system', () => {
           initing.value = false
         })
 
-      //         // 注册router插件
-      //         if (app != null) {
-      //           app.use(useRouterStore().getRouter())
-      //           console.log('router插件注册完成')
-      //         }
       //         // 系统接口（要用到router插件）
       //         if (notEmpty(result.data.apis) && hasText(result.data.checksum.apisChecksum)) {
       //           await useApiStore().evalData(result.data.apis, result.data.checksum.apisChecksum)
