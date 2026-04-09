@@ -11,8 +11,8 @@ import Storage from '@/utils/storage'
 const viewComponents = import.meta.glob('@/views/**/*.vue')
 
 export const useRouterStore = defineStore('router', () => {
+  const routeUpdateTime = ref(null)
   const routes = ref([])
-  const checksum = ref(null)
   const router = ref(null)
 
   function dfsRoute(nowRoute) {
@@ -43,8 +43,8 @@ export const useRouterStore = defineStore('router', () => {
   /**
    * 系统路由赋值函数
    */
-  async function evalData(routeData, checksumData) {
-    checksum.value = checksumData
+  async function evalData(routeData, routeUT) {
+    if (routeUT != null) routeUpdateTime.value = routeUT
     if (notEmpty(routeData)) {
       routeData.forEach(item => {
         dfsRoute(item)
@@ -134,7 +134,6 @@ export const useRouterStore = defineStore('router', () => {
 
   return {
     routes,
-    checksum,
     evalData,
     clearRouter,
     getRouter
