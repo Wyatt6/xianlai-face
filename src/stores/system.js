@@ -11,7 +11,6 @@ import { useApiStore } from '@/apis'
 
 export const useSystemStore = defineStore('system', () => {
   const initing = ref(false)
-  const initData = ref({})
 
   const logoutLock = ref(false)
   function setLogoutLock() {
@@ -33,11 +32,11 @@ export const useSystemStore = defineStore('system', () => {
       await axios
         .get('/api/system/core/init/getInitData', {
           headers: {
+            'Content-Type': 'application/json; charset=utf-8',
             'X-Request-Time': getCurrMilliTimestamp()
           },
           params: { domain: window.location.hostname },
-          timeout: 60000,
-          headers: { 'X-Request-Time': getCurrMilliTimestamp() }
+          timeout: 60000
         })
         .then(async response => {
           const headers = response.headers
@@ -45,7 +44,6 @@ export const useSystemStore = defineStore('system', () => {
           if (result.success) {
             if (notEmpty(result.data)) {
               console.log(result)
-              initData.value = result.data
               // 租户信息
               if (notEmpty(result.data.tenant)) {
                 await useTenantStore().evalData(result.data.tenant)
