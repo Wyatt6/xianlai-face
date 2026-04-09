@@ -56,6 +56,12 @@ export const useSystemStore = defineStore('system', () => {
                 await useConfigStore().evalData(result.data.configs, systemCUT, tenantCUT)
                 console.log('配置数据加载完成')
               }
+              // 路径路径
+              if (notEmpty(result.data.paths)) {
+                const pathUpdateTime = headers['x-path-update-time']
+                await usePathStore().evalData(result.data.paths, pathUpdateTime)
+                console.log('路径数据加载完成')
+              }
             }
           } else {
             initFail()
@@ -73,11 +79,7 @@ export const useSystemStore = defineStore('system', () => {
       //         initData.value = result.data
       //         // 清除旧的路由实例
       //         await useRouterStore().clearRouter()
-      //         // 系统路径
-      //         if (notEmpty(result.data.paths) && hasText(result.data.checksum.pathsChecksum)) {
-      //           await usePathStore().evalData(result.data.paths, result.data.checksum.pathsChecksum)
-      //           console.log('路径数据加载完成')
-      //         }
+
       //         // 系统路由
       //         if (notEmpty(result.data.routes) && hasText(result.data.checksum.routesChecksum)) {
       //           await useRouterStore().evalData(result.data.routes, result.data.checksum.routesChecksum)

@@ -8,22 +8,21 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const usePathStore = defineStore('path', () => {
+  const pathUpdateTime = ref(null)
   const data = ref({})
-  const checksum = ref(null)
 
   /**
    * 系统路径赋值函数
    */
-  async function evalData(pathData, checksumData) {
-    checksum.value = checksumData
-    pathData.forEach(item => {
+  async function evalData(pathList, pathUT) {
+    if (pathUT != null) pathUpdateTime.value = pathUT
+    pathList.forEach(item => {
       data.value[item.name] = item.path
     })
   }
 
   return {
     data,
-    checksum,
     evalData
   }
 })
