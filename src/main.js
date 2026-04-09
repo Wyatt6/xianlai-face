@@ -1,6 +1,7 @@
 // 有坑：样式的引入需要放在前面
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import installDirectives from './directives' // 引入自定义指令
+import 'element-plus/dist/index.css' // 先引入ElementPlus样式
 import './style.css' // 引入全局样式（包含Tailwind样式）
 
 import { createApp } from 'vue'
