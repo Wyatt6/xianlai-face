@@ -20,7 +20,10 @@ export const useSystemStore = defineStore('system', () => {
     logoutLock.value = false
   }
 
-  function initFail() {
+  function initFail(message) {
+    if (hasText(message)) {
+      document.getElementById('initHint').innerHTML = message
+    }
     document.getElementById('init').style.display = 'none'
     document.getElementById('initFail').style.display = 'flex'
   }
@@ -29,6 +32,7 @@ export const useSystemStore = defineStore('system', () => {
     // 获取初始化数据
     if (!initing.value) {
       initing.value = true
+      console.log('开始初始化:', getCurrMilliTimestamp())
       await axios
         .get('/api/system/core/init/getInitData', {
           headers: {
@@ -81,8 +85,9 @@ export const useSystemStore = defineStore('system', () => {
               console.log('router插件注册完成')
             }
           } else {
-            initFail()
-            console.error('获取初始数据失败')
+            console.log(result)
+            initFail(result.message)
+            console.error('获取初始数据失败:', getCurrMilliTimestamp())
           }
         })
         .catch(error => {

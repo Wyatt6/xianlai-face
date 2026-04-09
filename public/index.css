@@ -68,7 +68,7 @@ html {
 
           .init-title {
             user-select: none;
-            margin-top: 2rem;
+            margin-top: 0.5rem;
             font-size: 2rem;
             color: #606266;
           }
@@ -94,10 +94,17 @@ html {
             height: var(--icon-size);
           }
 
-          .init-title {
+          .init-hint {
             user-select: none;
             margin-top: 2rem;
-            font-size: 2rem;
+            font-size: 1.5rem;
+            color: #606266;
+          }
+
+          .init-title {
+            user-select: none;
+            margin-top: 0.8rem;
+            font-size: 2.2rem;
             color: #606266;
           }
 
