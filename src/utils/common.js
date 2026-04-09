@@ -56,3 +56,7 @@ export function getDaysOfMonth(year, month) {
     return year % 4 === 0 ? 29 : 28
   }
 }
+
+export function getCurrMilliTimestamp() {
+  return Date.now()
+}

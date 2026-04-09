@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
-import { notEmpty } from '@/utils/common'
+import { notEmpty, getCurrMilliTimestamp } from '@/utils/common'
 import { useTenantStore } from './tenant'
 import { useConfigStore } from './config'
 import { useRouterStore } from '@/router'
@@ -34,7 +34,8 @@ export const useSystemStore = defineStore('system', () => {
         .get('/api/system/core/init/getInitData', {
           headers: { 'Content-Type': 'application/json; charset=utf-8' },
           params: { domain: window.location.hostname },
-          timeout: 60000
+          timeout: 60000,
+          headers: { 'X-Request-Time': getCurrMilliTimestamp() }
         })
         .then(async response => {
           const headers = response.headers
