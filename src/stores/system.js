@@ -46,7 +46,6 @@ export const useSystemStore = defineStore('system', () => {
           const headers = response.headers
           const result = response.data
           if (result.success) {
-            console.log(result)
             // 清除旧的路由实例
             await useRouterStore().clearRouter()
             // 租户信息
