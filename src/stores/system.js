@@ -32,7 +32,9 @@ export const useSystemStore = defineStore('system', () => {
       initing.value = true
       await axios
         .get('/api/system/core/init/getInitData', {
-          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          headers: {
+            'X-Request-Time': getCurrMilliTimestamp()
+          },
           params: { domain: window.location.hostname },
           timeout: 60000,
           headers: { 'X-Request-Time': getCurrMilliTimestamp() }
