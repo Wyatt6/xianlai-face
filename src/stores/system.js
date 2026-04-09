@@ -69,6 +69,11 @@ export const useSystemStore = defineStore('system', () => {
               await useRouterStore().evalData(result.data.routes, routeUpdateTime)
               console.log('路由数据加载完成')
             }
+            // 菜单数据
+            if (notEmpty(result.data) && notEmpty(result.data.menus)) {
+              const menuUpdateTime = headers['x-menu-update-time']
+              await useMenuStore().evalData(result.data.menus, menuUpdateTime)
+              console.log('菜单数据加载完成')
             }
           } else {
             initFail()
@@ -83,21 +88,6 @@ export const useSystemStore = defineStore('system', () => {
           initing.value = false
         })
 
-      //         initData.value = result.data
-      //         // 清除旧的路由实例
-      //         await useRouterStore().clearRouter()
-
-      //         // 系统路由
-      //         if (notEmpty(result.data.routes) && hasText(result.data.checksum.routesChecksum)) {
-      //           await useRouterStore().evalData(result.data.routes, result.data.checksum.routesChecksum)
-      //           console.log('路由数据加载完成')
-      //           console.log(useRouterStore().routes)
-      //         }
-      //         // 系统菜单
-      //         if (notEmpty(result.data.menus) && hasText(result.data.checksum.menusChecksum)) {
-      //           await useMenuStore().evalData(result.data.menus, result.data.checksum.menusChecksum)
-      //           console.log('菜单数据加载完成')
-      //         }
       //         // 注册router插件
       //         if (app != null) {
       //           app.use(useRouterStore().getRouter())
@@ -118,7 +108,6 @@ export const useSystemStore = defineStore('system', () => {
   }
 
   return {
-    initData,
     setLogoutLock,
     releaseLogoutLock,
     initialize

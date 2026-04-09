@@ -10,8 +10,8 @@ import { ref } from 'vue'
 import { usePathStore } from './path'
 
 export const useMenuStore = defineStore('menu', () => {
+  const menuUpdateTime = ref(null)
   const data = ref([])
-  const checksum = ref(null)
 
   function dfsMenu(nowMenu) {
     nowMenu.path = usePathStore().data[nowMenu.pathName]
@@ -25,8 +25,8 @@ export const useMenuStore = defineStore('menu', () => {
   /**
    * 系统菜单赋值函数
    */
-  async function evalData(menuData, checksumData) {
-    checksum.value = checksumData
+  async function evalData(menuData, menuUT) {
+    if (menuUT != null) menuUpdateTime.value = menuUT
     if (notEmpty(menuData)) {
       menuData.forEach(item => {
         dfsMenu(item)
@@ -37,7 +37,6 @@ export const useMenuStore = defineStore('menu', () => {
 
   return {
     data,
-    checksum,
     evalData
   }
 })
