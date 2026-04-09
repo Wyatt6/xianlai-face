@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
-import { notEmpty, getCurrMilliTimestamp, hasText } from '@/utils/common'
+import { notEmpty, hasText, getCurrMilliTimestamp, getCurrentTimeWithMs } from '@/utils/common'
 import { useTenantStore } from './tenant'
 import { useConfigStore } from './config'
 import { useRouterStore } from '@/router'
@@ -32,7 +32,7 @@ export const useSystemStore = defineStore('system', () => {
     // 获取初始化数据
     if (!initing.value) {
       initing.value = true
-      console.log('开始初始化:', getCurrMilliTimestamp())
+      console.log('开始初始化:', getCurrentTimeWithMs())
       await axios
         .get('/api/system/core/init/getInitData', {
           headers: {
@@ -90,15 +90,14 @@ export const useSystemStore = defineStore('system', () => {
               console.log('接口数据加载完成')
             }
             // 挂载页面到Vue应用
-            console.log('系统初始化完成:', getCurrMilliTimestamp())
+            console.log('系统初始化完成:', getCurrentTimeWithMs())
             if (app != null) {
               app.mount('#app')
               console.log('#app已挂载')
             }
           } else {
-            console.log(result)
             initFail(result.message)
-            console.error('获取初始数据失败:', getCurrMilliTimestamp())
+            console.error('获取初始数据失败:', getCurrentTimeWithMs())
           }
         })
         .catch(error => {
