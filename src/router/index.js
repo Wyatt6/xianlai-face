@@ -45,7 +45,7 @@ export const useRouterStore = defineStore('router', () => {
    * 系统路由赋值函数
    */
   async function evalData(routeData, routeUT) {
-    if (routeUT != null) routeUpdateTime.value = routeUT
+    if (routeUT != null) routeUpdateTime.value = Number(routeUT)
     if (notEmpty(routeData)) {
       routeData.forEach(item => {
         dfsRoute(item)

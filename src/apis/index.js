@@ -23,7 +23,7 @@ export const useApiStore = defineStore('api', () => {
    * 系统接口赋值函数
    */
   async function evalData(apiData, apiUT) {
-    if (apiUT != null) apiUpdateTime.value = apiUT
+    if (apiUT != null) apiUpdateTime.value = Number(apiUT)
     const axiosInstance = createAxiosInstance()
     if (notEmpty(apiData)) {
       apiData.forEach(item => {

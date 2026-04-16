@@ -15,7 +15,7 @@ export const usePathStore = defineStore('path', () => {
    * 系统路径赋值函数
    */
   async function evalData(pathList, pathUT) {
-    if (pathUT != null) pathUpdateTime.value = pathUT
+    if (pathUT != null) pathUpdateTime.value = Number(pathUT)
     pathList.forEach(item => {
       data.value[item.name] = item.path
     })

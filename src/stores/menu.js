@@ -26,7 +26,7 @@ export const useMenuStore = defineStore('menu', () => {
    * 系统菜单赋值函数
    */
   async function evalData(menuData, menuUT) {
-    if (menuUT != null) menuUpdateTime.value = menuUT
+    if (menuUT != null) menuUpdateTime.value = Number(menuUT)
     if (notEmpty(menuData)) {
       menuData.forEach(item => {
         dfsMenu(item)
