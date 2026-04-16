@@ -1,0 +1,207 @@
+<template>
+  <div class="w-full h-full flex flex-col items-center bg-white">
+    <div class="w-3/4">
+      <div class="w-full flex items-end justify-between mt-[2rem] md:mt-[0.8rem]">
+        <span class="text-[2.5rem] text-gray-700 font-[Tahoma] font-bold">注册</span>
+        <div>
+          <span class="text-gray-700">已有账号？</span>
+          <span :class="loading ? 'sub-title-link__disabled' : 'sub-title-link'" @click="toLogin()">点此登录</span>
+        </div>
+      </div>
+      <el-form class="mt-[4rem]" :disabled="loading">
+        <el-form-item>
+          <el-input size="large" placeholder="用户名" clearable />
+        </el-form-item>
+        <el-form-item>
+          <el-input size="large" placeholder="密码" clearable />
+        </el-form-item>
+        <el-form-item>
+          <el-input size="large" placeholder="密码" clearable />
+        </el-form-item>
+        <el-form-item>
+          <el-input size="large" placeholder="验证码" clearable />
+        </el-form-item>
+      </el-form>
+      <el-button class="w-full mt-[3rem]" type="primary" size="large" :loading="loading">
+        <span class="text-[2rem]">立即注册</span>
+      </el-button>
+    </div>
+  </div>
+  <!-- <div class="box-wrap">
+    <el-form class="form-wrap" ref="formRef" :model="formModel" :rules="formRules" :disabled="loading">
+      <el-form-item prop="username">
+        <el-input size="large" placeholder="用户名" v-model="formModel.username" :maxlength="uMaxLen" clearable />
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input size="large" placeholder="密码" v-model="formModel.password" type="password" :maxlength="pMaxLen" show-password />
+      </el-form-item>
+      <el-form-item prop="password2">
+        <el-input size="large" placeholder="再次输入密码" v-model="formModel.password2" :maxlength="pMaxLen" show-password />
+      </el-form-item>
+      <el-form-item prop="captcha">
+        <el-input size="large" placeholder="验证码" v-model="formModel.captcha" :maxlength="Option.data.captcha.length" clearable>
+          <template #append>
+            <div class="captcha-box">
+              <Captcha ref="captchaRef" :loading="loading" />
+            </div>
+          </template>
+        </el-input>
+      </el-form-item>
+    </el-form>
+  </div> -->
+</template>
+
+<script setup>
+// import Captcha from '@/components/Captcha/index.vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+// import { useOptionStore } from '@/stores/option'
+// import Validator from '@/utils/validator'
+// import Storage from '@/utils/storage'
+// import { useApiStore } from '@/apis'
+import { usePathStore } from '@/stores/path'
+// import { ElMessage, ElMessageBox } from 'element-plus'
+
+const router = useRouter()
+const loading = ref(false)
+// const captchaRef = ref()
+// const Option = useOptionStore()
+// const Api = useApiStore()
+const Path = usePathStore()
+
+// const formRef = ref()
+// const formModel = ref({
+//   username: '',
+//   password: '',
+//   password2: '',
+//   captcha: ''
+// })
+// const uMinLen = Option.data.user.username.minLen
+// const uMaxLen = Option.data.user.username.maxLen
+// const pMinLen = Option.data.user.password.minLen
+// const pMaxLen = Option.data.user.password.maxLen
+// const formRules = ref({
+//   username: [
+//     { required: true, message: '请输入用户名', trigger: 'blur' },
+//     { min: uMinLen, max: uMaxLen, message: `长度${uMinLen}至${uMaxLen}位`, trigger: 'change' },
+//     { min: uMinLen, max: uMaxLen, message: `长度${uMinLen}至${uMaxLen}位`, trigger: 'blur' },
+//     { validator: Validator.username(), trigger: 'change' },
+//     { validator: Validator.username(), trigger: 'blur' }
+//   ],
+//   password: [
+//     { required: true, message: '请输入密码', trigger: 'blur' },
+//     { min: pMinLen, max: pMaxLen, message: `长度${pMinLen}至${pMaxLen}位`, trigger: 'change' },
+//     { min: pMinLen, max: pMaxLen, message: `长度${pMinLen}至${pMaxLen}位`, trigger: 'blur' },
+//     { validator: Validator.password(), trigger: 'change' },
+//     { validator: Validator.password(), trigger: 'blur' }
+//   ],
+//   password2: [
+//     { required: true, message: '请再次输入密码', trigger: 'blur' },
+//     {
+//       validator: (rule, value, callback) => {
+//         if (formModel.value.password !== value) {
+//           callback(new Error('两次输入的密码不一致'))
+//         } else {
+//           callback()
+//         }
+//       },
+//       trigger: 'blur'
+//     }
+//   ],
+//   captcha: [
+//     { required: true, message: '请输入验证码', trigger: 'blur' },
+//     { validator: Validator.captcha(), trigger: 'blur' }
+//   ]
+// })
+
+// function onRegister() {
+//   console.log('注册新用户')
+//   formRef.value.validate(valid => {
+//     if (valid) {
+//       loading.value = true
+//       const input = {
+//         username: formModel.value.username,
+//         password: formModel.value.password,
+//         captchaKey: captchaRef.value.captchaKey,
+//         captcha: formModel.value.captcha
+//       }
+//     Api.request.iam.user
+//       .register(null, input)
+//       .finally(() => {
+//         loading.value = false
+//       })
+//       .then(result => {
+//         if (result && result.success) {
+//           console.log('注册成功，跳转到登录页面')
+//           Storage.set(Storage.keys.REMEMBER_USERNAME, result.data.user.username)
+//           ElMessageBox.alert(`欢迎使用「${Option.data.system.name}」系统，请登陆`, '注册成功', {
+//             callback: action => {
+//               router.push(Path.data.LOGIN)
+//             }
+//           })
+//         } else {
+//           console.log('注册失败')
+//           ElMessage.error(result && result.data && result.data.failMessage ? result.data.failMessage : '注册失败')
+//           // 自动刷新验证码
+//           captchaRef.value.initCaptcha(true)
+//           formModel.value.captcha = ''
+//         }
+//       })
+//   } else {
+//     ElMessage.error('输入格式错误')
+//     console.log('注册表单数据格式错误')
+//   }
+// })
+// }
+
+// /**
+//  * 回车注册
+//  * @param event 键盘事件对象
+//  */
+// document.onkeydown = event => {
+//   if (event.keyCode === 13) {
+//     onRegister()
+//   }
+// }
+
+function toLogin() {
+  if (!loading.value) {
+    router.push(Path.data.LOGIN)
+  }
+}
+
+// /**
+//  * 绑定验证码组件，挂载组件时初始化验证码
+//  */
+// onMounted(() => {
+//   captchaRef.value.initCaptcha(true)
+// })
+</script>
+
+<style scoped>
+.sub-title-link {
+  color: #409eff;
+  font-size: 1.4rem;
+  cursor: pointer;
+
+  &__disabled {
+    color: #409eff;
+    font-size: 1.4rem;
+    cursor: not-allowed;
+  }
+}
+/*
+.form-wrap {
+  margin-top: 6rem;
+
+  :deep(.el-input-group__append) {
+    padding: 0;
+  }
+
+  .captcha-box {
+    width: 15rem;
+    height: 4rem;
+  }
+}
+*/
+</style>
