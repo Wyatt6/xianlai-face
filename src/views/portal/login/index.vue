@@ -8,19 +8,25 @@
           <span :class="loading ? 'sub-title-link__disabled' : 'sub-title-link'" @click="toRegister()">点此注册</span>
         </div>
       </div>
-      <el-form class="mt-[4rem]" :disabled="loading">
+      <el-form class="mt-[4rem]" ref="formRef" :model="formModel" :rules="formRules" :disabled="loading">
         <el-form-item>
-          <el-input size="large" placeholder="用户名" clearable />
+          <el-input size="large" placeholder="用户名" v-model="formModel.username" :maxlength="uMaxLen" clearable />
         </el-form-item>
         <el-form-item>
-          <el-input size="large" placeholder="密码" clearable />
+          <el-input size="large" placeholder="密码" v-model="formModel.password" type="password" :maxlength="pMaxLen" show-password />
         </el-form-item>
         <el-form-item>
-          <el-input size="large" placeholder="验证码" clearable />
+          <el-input size="large" placeholder="验证码" v-model="formModel.captcha" :maxlength="Config.data.captcha.length" clearable>
+            <template #append>
+              <div class="w-[15rem] h-[4rem] flex items-center">
+                <Captcha class="w-full h-full" ref="captchaRef" :loading="loading" />
+              </div>
+            </template>
+          </el-input>
         </el-form-item>
       </el-form>
       <div class="flex items-center justify-between">
-        <el-checkbox label="记住我" />
+        <el-checkbox label="记住我" v-model="rememberMe" />
         <span class="sub-title-link">已有帐号，忘记密码？</span>
       </div>
       <el-button class="w-full mt-[3rem]" type="primary" size="large" :loading="loading">
@@ -28,85 +34,56 @@
       </el-button>
     </div>
   </div>
-
-  <!-- <div class="box-wrap">
-    <el-form class="form-wrap" ref="formRef" :model="formModel" :rules="formRules" :disabled="loading">
-      <el-form-item prop="username">
-        <el-input size="large" placeholder="用户名" v-model="formModel.username" :maxlength="uMaxLen" clearable />
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input size="large" placeholder="密码" v-model="formModel.password" type="password" :maxlength="pMaxLen" show-password />
-      </el-form-item>
-      <el-form-item prop="captcha">
-        <el-input size="large" placeholder="验证码" v-model="formModel.captcha" :maxlength="Option.data.captcha.length" clearable>
-          <template #append>
-            <div class="captcha-box">
-              <Captcha ref="captchaRef" :loading="loading" />
-            </div>
-          </template>
-        </el-input>
-      </el-form-item>
-    </el-form>
-    <div class="sub-box">
-      <div>
-        <el-checkbox v-model="rememberMe" label="记住我" />
-      </div>
-      <div @click="toResetPassword()">
-        <span class="sub-title-link">已有帐号，忘记密码？</span>
-      </div>
-    </div>
-  </div> -->
 </template>
 
 <script setup>
-// import Captcha from '@/components/Captcha/index.vue'
 // import { ElMessage } from 'element-plus'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-// import Storage from '@/utils/storage'
-// import Validator from '@/utils/validator'
+import Storage from '@/utils/storage'
+import Validator from '@/utils/validator'
 import { useConfigStore } from '@/stores/config'
-// import { useApiStore } from '@/apis'
 import { usePathStore } from '@/stores/path'
+// import { useApiStore } from '@/apis'
 
 const loading = ref(false)
 const router = useRouter()
-// const captchaRef = ref()
-// const rememberMe = ref(Storage.get(Storage.keys.REMEMBER_USERNAME) != null)
+const captchaRef = ref()
+const rememberMe = ref(Storage.get(Storage.keys.REMEMBER_USERNAME) != null)
 const Config = useConfigStore()
-// const Api = useApiStore()
 const Path = usePathStore()
+// const Api = useApiStore()
 
-// const formRef = ref()
-// const formModel = ref({
-//   username: Storage.get(Storage.keys.REMEMBER_USERNAME) || '', // 自动填充记住的用户名
-//   password: '',
-//   captcha: ''
-// })
-// const uMinLen = Option.data.user.username.minLen
-// const uMaxLen = Option.data.user.username.maxLen
-// const pMinLen = Option.data.user.password.minLen
-// const pMaxLen = Option.data.user.password.maxLen
-// const formRules = ref({
-//   username: [
-//     { required: true, message: '请输入用户名', trigger: 'blur' },
-//     { min: uMinLen, max: uMaxLen, message: `长度${uMinLen}至${uMaxLen}位`, trigger: 'change' },
-//     { min: uMinLen, max: uMaxLen, message: `长度${uMinLen}至${uMaxLen}位`, trigger: 'blur' },
-//     { validator: Validator.username(), trigger: 'change' },
-//     { validator: Validator.username(), trigger: 'blur' }
-//   ],
-//   password: [
-//     { required: true, message: '请输入密码', trigger: 'blur' },
-//     { min: pMinLen, max: pMaxLen, message: `长度${pMinLen}至${pMaxLen}位`, trigger: 'change' },
-//     { min: pMinLen, max: pMaxLen, message: `长度${pMinLen}至${pMaxLen}位`, trigger: 'blur' },
-//     { validator: Validator.password(), trigger: 'change' },
-//     { validator: Validator.password(), trigger: 'blur' }
-//   ],
-//   captcha: [
-//     { required: true, message: '请输入验证码', trigger: 'blur' },
-//     { validator: Validator.captcha(), trigger: 'blur' }
-//   ]
-// })
+const formRef = ref()
+const formModel = ref({
+  username: Storage.get(Storage.keys.REMEMBER_USERNAME) || '', // 自动填充记住的用户名
+  password: '',
+  captcha: ''
+})
+const uMinLen = Config.data.user.username.len.min
+const uMaxLen = Config.data.user.username.len.max
+const pMinLen = Config.data.user.password.len.min
+const pMaxLen = Config.data.user.password.len.max
+const formRules = ref({
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: uMinLen, max: uMaxLen, message: `长度${uMinLen}至${uMaxLen}位`, trigger: 'change' },
+    { min: uMinLen, max: uMaxLen, message: `长度${uMinLen}至${uMaxLen}位`, trigger: 'blur' },
+    { validator: Validator.username(), trigger: 'change' },
+    { validator: Validator.username(), trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: pMinLen, max: pMaxLen, message: `长度${pMinLen}至${pMaxLen}位`, trigger: 'change' },
+    { min: pMinLen, max: pMaxLen, message: `长度${pMinLen}至${pMaxLen}位`, trigger: 'blur' },
+    { validator: Validator.password(), trigger: 'change' },
+    { validator: Validator.password(), trigger: 'blur' }
+  ],
+  captcha: [
+    { required: true, message: '请输入验证码', trigger: 'blur' },
+    { validator: Validator.captcha(), trigger: 'blur' }
+  ]
+})
 
 // function onLogin() {
 //   console.log('用户登录')
@@ -180,22 +157,15 @@ function toRegister() {
 //   }
 // }
 
-// /**
-//  * 绑定验证码组件，挂载组件时初始化验证码
-//  */
-// onMounted(() => {
-//   captchaRef.value.initCaptcha(true)
-// })
+/**
+ * 绑定验证码组件，挂载组件时初始化验证码
+ */
+onMounted(() => {
+  captchaRef.value.initCaptcha(true)
+})
 </script>
 
 <style scoped>
-/* .box-wrap {
-  width: 100%;
-  height: 100%;
-
-  .sub-title {
-    font-size: 1.4rem;
-  } */
 .sub-title-link {
   color: #409eff;
   font-size: 1.4rem;
@@ -207,18 +177,7 @@ function toRegister() {
     cursor: not-allowed;
   }
 }
-/*
-  .form-wrap {
-    margin-top: 9rem;
-
-    :deep(.el-input-group__append) {
-      padding: 0;
-    }
-
-    .captcha-box {
-      width: 15rem;
-      height: 4rem;
-    }
-  }
-*/
+:deep(.el-input-group__append) {
+  padding: 0;
+}
 </style>
