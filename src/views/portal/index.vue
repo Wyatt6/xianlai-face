@@ -18,7 +18,7 @@
         <!-- 输入表单 -->
         <div class="w-full md:w-1/2 h-full flex flex-col items-center md:shadow-lg">
           <!-- 租户logo和名称 -->
-          <div class="max-w-[80%] flex items-center gap-[1rem] mt-[10rem] mb-[2rem] md:mt-[5rem]">
+          <div class="max-w-[80%] flex items-center gap-[1rem] mt-[8rem] mb-[2rem] md:mt-[4rem]">
             <el-avatar class="flex-shrink-0" shape="square" :size="30" src="/images/logo-small.png"></el-avatar>
             <span class="text-[1.8rem] font-[500] leading-normal flex-1 line-clamp-1 text-ellipsis whitespace-nowrap break-all">{{ Tenant.data.displayName }}</span>
           </div>

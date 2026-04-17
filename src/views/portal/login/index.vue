@@ -8,7 +8,7 @@
           <span :class="loading ? 'sub-title-link__disabled' : 'sub-title-link'" @click="toRegister()">点此注册</span>
         </div>
       </div>
-      <el-form class="mt-[4rem]">
+      <el-form class="mt-[4rem]" :disabled="loading">
         <el-form-item>
           <el-input size="large" placeholder="用户名" clearable />
         </el-form-item>
@@ -20,29 +20,16 @@
         </el-form-item>
       </el-form>
       <div class="flex items-center justify-between">
-        <div>
-          <el-checkbox label="记住我" />
-        </div>
-        <div>
-          <span class="sub-title-link">已有帐号，忘记密码？</span>
-        </div>
+        <el-checkbox label="记住我" />
+        <span class="sub-title-link">已有帐号，忘记密码？</span>
       </div>
-      <el-button class="w-full mt-[3rem]" type="primary" size="large">
+      <el-button class="w-full mt-[3rem]" type="primary" size="large" :loading="loading">
         <span class="text-[2rem]">登 录</span>
       </el-button>
     </div>
   </div>
 
   <!-- <div class="box-wrap">
-    <div class="box-header">
-      <div>
-        <span class="title">登录</span>
-      </div>
-      <div v-if="Option.data.portal.allowRegister">
-        <span class="sub-title">没有账号？</span>
-        <span :class="loading ? 'sub-title-link__disabled' : 'sub-title-link'" @click="toRegister()">点此注册</span>
-      </div>
-    </div>
     <el-form class="form-wrap" ref="formRef" :model="formModel" :rules="formRules" :disabled="loading">
       <el-form-item prop="username">
         <el-input size="large" placeholder="用户名" v-model="formModel.username" :maxlength="uMaxLen" clearable />
@@ -68,9 +55,6 @@
         <span class="sub-title-link">已有帐号，忘记密码？</span>
       </div>
     </div>
-    <el-button class="login-btn" type="primary" size="large" :loading="loading" @click="onLogin()">
-      <span class="login-btn-label">登 录</span>
-    </el-button>
   </div> -->
 </template>
 
@@ -224,49 +208,17 @@ function toRegister() {
   }
 }
 /*
-  .box-header {
-    width: 100%;
-    height: 3.5rem;
-    margin-bottom: 2.5rem;
-    display: flex;
-    align-items: flex-end; // 下边对齐
-    justify-content: space-between;
-
-    .title {
-      font-size: 3rem;
-      font-weight: bold;
-      font-family: Tahoma;
-    }
-  }
-
   .form-wrap {
     margin-top: 9rem;
 
     :deep(.el-input-group__append) {
       padding: 0;
-    } */
-/* 
+    }
+
     .captcha-box {
       width: 15rem;
       height: 4rem;
     }
   }
-
-  .sub-box {
-    width: 100%;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .login-btn {
-    width: 100%;
-    margin-top: 5rem;
-
-    .login-btn-label {
-      font-size: 1.8rem;
-    }
-  }
-} */
+*/
 </style>
